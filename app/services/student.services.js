@@ -1,30 +1,5 @@
 const {Student}=require("../models/index.js")
 
-let students=[
-    {
-        id:1,
-        fullname:"Bui Quang Thanh",
-        age:18,
-        numberClass:20,
-
-    },
-    {
-        id:2,
-        fullname:"Bui Tien Dat ",
-        age:20,
-        numberClass:30,
-
-    },
-    {
-        id:3,
-        fullname:"Nguyen Thi Minh Thao",
-        age:18,
-        numberClass:21,
-
-    }
-
-]
-
 const getList=async ()=>{
   const students_= await Student.findAll()
     if(students_)
@@ -83,10 +58,7 @@ const deleteByID=async(id)=>{
     })
   
       if (deletedStudent) {
-        //     students=students.filter((student)=>{
-        //     return student.id != id
-        // })
-        
+      
         return true
       } else {
         return false;

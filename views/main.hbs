@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <title>Student Management</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Emanuele Rizzolo">
+    <meta name="description" content="Main page per modello di sito web">
+    <meta charset="utf-8" />
+   
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
+        integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w=="
+        crossorigin="anonymous" />
+    {{#each css}}
+        <link rel="stylesheet" href="/css/{{this}}">
+    {{/each}}
+
+</head>
+
+<body>
+    <h1>Welcome to App Student Management</h1>
+    <h2>List of Student in Database </h2>
+    <div>
+        <table id="customers" >
+        <tr>
+            <th>ID</th>
+            <th>Fullname</th>
+            <th>Age</th>
+            <th>NumberClass</th>
+        </tr>
+        </br>
+        {{#each data}}
+        <tr>
+            <td>{{this.id}}</td>
+            <td>{{this.fullname}}</td>
+            <td>{{this.age}}</td>
+            <td>{{this.numberClass}}</td>
+        </tr>
+       
+        {{/each}}
+        </table>
+    </div>
+    </br>
+    <h2>Get information of student by ID</h2>
+    <form onsubmit="window.location='http://localhost:3000/students/'+ search.value ; return false;">
+        <label for="site-search">Search the site:</label>
+        <input type="search" placeholder="ID" id="search" name="search">
+        <input type="submit" value="Send">
+    </form>
+    </br>
+    <h2>Update information of student</h2>
+    <form onsubmit="updateStudent()">
+        <fieldset>
+            <legend>Information</legend>
+        
+            <input type="text" placeholder="Id" id="id_update" name="id" ><br /><br />
+            <input type="text" placeholder="Fullname" id="fullname_update" name="fullname"><br /><br />
+            <input type="text" placeholder="Age" id="age_update" name="age"><br /><br />
+            <input type="text" placeholder="NumberClass" id="numberClass_update" name="numberClass"><br /><br />
+            <input type="submit" id="submit" value="Submit">
+        </fieldset>
+    </form>
+    <script>
+
+        function updateStudent(){
+         const dataObject = {
+            id: document.getElementById('id_update').value,
+            fullname:document.getElementById('fullname_update').value,
+            age: document.getElementById('age_update').value,
+            numberClass: document.getElementById('numberClass_update').value,
+        };
+        var id=document.getElementById('id_update').value
+
+        fetch('http://localhost:3000/students/'+id,{
+            method:'PUT',
+            headers:{
+            'Content-Type':'application/json'
+            },
+            body:JSON.stringify(dataObject)
+        }).then(response=>{
+            return response.json()
+        }).then(data=> 
+        // this is the data we get after putting our data,
+        console.log(data)
+        );
+        } 
+
+        function addStudent(){
+             const dataObject = {
+            fullname:document.getElementById('fullname_add').value,
+            age: document.getElementById('age_add').value,
+            numberClass: document.getElementById('numberClass_add').value,
+        };
+       
+
+        fetch('http://localhost:3000/students/',{
+            method:'POST',
+            headers:{
+            'Content-Type':'application/json'
+            },
+            body:JSON.stringify(dataObject)
+        }).then(response=>{
+            return response.json()
+        }).then(data=> 
+        // this is the data we get after putting our data,
+        console.log(data)
+        );
+        }
+
+        function deleteStudent()
+        {
+            var id=document.getElementById('id_delete').value
+         fetch('http://localhost:3000/students/' + id, {
+            method: 'DELETE',
+            })
+            .then(res => res.text()) // or res.json()
+            .then(res => console.log(res))
+        }
+    </script>
+    </br>
+    <h2>Add Student</h2>
+    <form onsubmit="addStudent()">
+        <fieldset>
+            <legend>Add Student </legend>
+            <input type="text" placeholder="Fullname" id="fullname_add" name="fullname"><br /><br />
+            <input type="text" placeholder="Age" id="age_add" name="age"><br /><br />
+            <input type="text" placeholder="NumberClass" id="numberClass_add" name="numberClass"><br /><br />
+            <input type="submit" id="submit" value="Submit">
+        </fieldset>
+    </form>
+
+
+    </br>
+    <h2>Delete student</h2>
+   <form onsubmit="deleteStudent()">
+        <label for="site-search">Search the ID for deleting:</label>
+        <input type="text" placeholder="ID" id="id_delete" name="id">
+        <input type="submit" value="Send">
+    </form>
+
+</body>
+
+</html>

@@ -3,9 +3,15 @@ const {getList,getDetailInforStudent,createStudent,updateInfor,deleteByID}=requi
 
 const getStudents = async (req, res) => {
     const studentsList=await getList();
+
     if(studentsList)
     {
-        res.status(200).send(studentsList);
+      // res.status(200).send(studentsList);
+      const data=JSON.parse(JSON.stringify(studentsList,null,2));
+     
+        res.render("main",{
+          data,
+        });
     }
     else{
         res.status(404).send("Not Found")
@@ -25,7 +31,7 @@ const getDetailStudent= async (req, res) => {
 const addStudent= async (req, res) => {
     let student = req.body;
     const newStudent = await createStudent(student)
-    res.status(201).send(newStudent);
+   
     if(newStudent)
     {
         res.status(201).send(newStudent);
@@ -47,7 +53,6 @@ const updateStudent= async (req, res) => {
     } else {
       res.status(404).send("Not found");
     }
-    res.send("Update infor student");
   }
 
 
