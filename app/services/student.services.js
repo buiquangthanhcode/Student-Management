@@ -1,3 +1,5 @@
+const {Student}=require("../models/index.js")
+
 let students=[
     {
         id:1,
@@ -23,66 +25,69 @@ let students=[
 
 ]
 
-const getList=()=>{
-    if(students)
+const getList=async ()=>{
+  const students_= await Student.findAll()
+    if(students_)
     {
-        return students
+        return students_
     }
     else{
         return false;
     }
 }
 
-const getDetailInforStudent=(id)=>{
-    const index = students.findIndex((student) => {
-        return student.id == id;
-      });
-      if (index !== -1) {
-       return students[index];
+const getDetailInforStudent= async (id)=>{
+    // const index = students.findIndex((student) => {
+    //     return student.id == id;
+    //   });
+      const student = await Student.findOne({
+        where :{
+          id:id,
+        }
+      })
+      if (student) {
+       return student;
       } else {
        return false;
       }
 }
-const createStudent=(student)=>{
-    const newstudent = {
-        id: Math.random(),
-        ...student, // copy lai toan bo du lieu
-      };
-      students = [...students, newstudent];
-      return newstudent
+const createStudent= async (student)=>{
+
+    const newStudent = await Student.create(student);
+      return newStudent
 }
-const updateInfor=(id,fullname, age, numberClass )=>{
-    const index = students.findIndex((student) => {
-        return student.id == id;
-      });
-    
-      if (index !== -1) {
-        const oldStudent = students[index];
-        const updatesStudent = {
-          ...oldStudent,    
-          fullname,
-          age,
-          numberClass,
-        };
-        students[index] = updatesStudent;
-        return updatesStudent
-      }
+const updateInfor=async(id,fullname, age, numberClass )=>{
+
+      const updateStudent=await getDetailInforStudent(id);
+      if (updateStudent) {
+        updateStudent.fullname=fullname;
+        updateStudent.age=age;
+        updateStudent.numberClass=numberClass;
+        const studentupdated = await updateStudent.save()
+        return studentupdated
+        }
       else{
         return false;
       }
 }
 
-const deleteByID=(id)=>{
-    const index = students.findIndex((student) => {
-        return student.id == id;
-      });
-      console.log(index);
-      if (index !== -1) {
+const deleteByID=async(id)=>{
+    // const index = students.findIndex((student) => {
+    //     return student.id == id;
+    //   });
+    //   console.log(index);
+    const deletedStudent= await Student.destroy({
+      where:{
+        id:id,
+      }
+    })
+  
+      if (deletedStudent) {
         //     students=students.filter((student)=>{
         //     return student.id != id
         // })
-        students.splice(index, 1);
-        return students
+        
+        return true
       } else {
         return false;
       }

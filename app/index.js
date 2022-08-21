@@ -9,3 +9,7 @@ app.use(router)
 app.listen(port,()=>{
     console.log("http://localhost:3000")
 })
+// set up sequelize
+const {sequelize}=require("./models/index.js")
+
+sequelize.sync({alter:true}) // alter la chi sua bang , khong xoa va tao bang moi 
