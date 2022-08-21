@@ -31,7 +31,10 @@ const getDetailStudent= async (req, res) => {
 const addStudent= async (req, res) => {
     let student = req.body;
     const newStudent = await createStudent(student)
+<<<<<<< HEAD
    
+=======
+>>>>>>> 1a7466ea171d69d1a5cbc381bbe7df92f62d87a2
     if(newStudent)
     {
         res.status(201).send(newStudent);
