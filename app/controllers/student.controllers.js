@@ -25,7 +25,6 @@ const getDetailStudent= async (req, res) => {
 const addStudent= async (req, res) => {
     let student = req.body;
     const newStudent = await createStudent(student)
-    res.status(201).send(newStudent);
     if(newStudent)
     {
         res.status(201).send(newStudent);
